@@ -1,34 +1,46 @@
 import random
 import os
 
-def generate_background():
-  """Generates a random background image for a landing page."""
-  image_path = os.path.join("images", random.choice(["flower.jpg", "mountains.jpg", "city.jpg"]))
-  with open(image_path, "rb") as f:
-    image = f.read()
-  return image
+def generate_landing_page():
+  title = "Welcome to our digital storefront!"
+  products = ["Product 1", "Product 2", "Product 3"]
+  prices = [100, 200, 300]
+  images = ["product1.jpg", "product2.jpg", "product3.jpg"]
 
-def create_landing_page(image):
-  """Creates a landing page with the given image as a background."""
-  with open("index.html", "w") as f:
-    f.write("""
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>My Landing Page</title>
-        <style>
-          body {
-            background-image: url(data:image/png;base64,{});
-          }
-        </style>
-      </head>
-      <body>
-        <h1>My Landing Page</h1>
-        <p>This is my landing page.</p>
-      </body>
-    </html>
-    """.format(base64.b64encode(image).decode()))
+  landing_page = """
+<html>
+<head>
+<title>{title}</title>
+</head>
+<body>
+<h1>{title}</h1>
+
+<ul>
+{products}
+</ul>
+
+<ul>
+{prices}
+</ul>
+
+<ul>
+{images}
+</ul>
+
+</body>
+</html>
+""".format(
+    title=title,
+    products="<li>{}</li>".format(product) for product in products,
+    prices="<li>${}</li>".format(price) for price in prices,
+    images="<li><img src='{}'></li>".format(image) for image in images,
+  )
+
+  return landing_page
+
+def main():
+  landing_page = generate_landing_page()
+  print(landing_page)
 
 if __name__ == "__main__":
-  image = generate_background()
-  create_landing_page(image)
+  main()
